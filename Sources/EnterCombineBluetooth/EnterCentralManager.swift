@@ -68,6 +68,7 @@ public class EnterCentralManager {
                 resolver.fulfill(peripheral)
             }.store(in: &cancellables)
         }
+        
     }
     
     

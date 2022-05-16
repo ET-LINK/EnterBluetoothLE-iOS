@@ -19,7 +19,7 @@ let package = Package(
         // .package(url: /* package url */, from: "1.0.0"),
         .package(url: "https://github.com/mxcl/PromiseKit.git", from: "6.15.3"),
         .package(url: "https://github.com/StarryInternet/CombineCoreBluetooth", from: "0.3.0"),
-        .package(url: "https://github.com/Entertech/IOS-Pods-DFU-Library.git", from: "4.11.2")
+        // .package(url: "https://github.com/Entertech/IOS-Pods-DFU-Library.git", from: "4.11.2")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -27,7 +27,6 @@ let package = Package(
         .target(
             name: "EnterCombineBluetooth",
             dependencies: [
-                .productItem(name: "NordicDFU", package: "IOS-Pods-DFU-Library", condition: nil),
                 "CombineCoreBluetooth",
                 "PromiseKit",
             ]),
