@@ -26,7 +26,7 @@ public class EnterCentralManager {
     ///   - mac: 物理地址, 默认为空, 当有字段时, 按照广播物理地址连接
     /// - Returns: 扫描到的设备列表
     public func searchForPeripherals(in interval: TimeInterval = 3.0, services: [CBUUID], mac: Data? = nil) -> Promise<[PeripheralDiscovery]> {
-
+    
         scanTask = centralManager.scanForPeripherals(withServices: services)
             .scan([], { list, discovery -> [PeripheralDiscovery] in
                 guard !list.contains(where: { $0.id == discovery.id}) else { return list } //避免重复
