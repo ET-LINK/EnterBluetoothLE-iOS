@@ -82,8 +82,22 @@ public class EnterCentralManager {
     
     /// 断开通知
     /// - Returns: 监听
-    public func disconnectListenner() -> AnyPublisher<(Peripheral, Error?), Never> {
+    public func disconnectPublisher() -> AnyPublisher<(Peripheral, Error?), Never> {
         return centralManager.didDisconnectPeripheral
+    }
+    
+    
+    /// 连接通知
+    /// - Returns: 监听内容
+    public func connectSuccessPublisher() -> AnyPublisher<Peripheral, Never> {
+        return centralManager.didConnectPeripheral
+    }
+    
+    
+    /// 连接失败通知
+    /// - Returns: 监听内容
+    public func connectFailPublisher() -> AnyPublisher<(Peripheral, Error?), Never> {
+        return centralManager.didFailToConnectPeripheral
     }
     
     
