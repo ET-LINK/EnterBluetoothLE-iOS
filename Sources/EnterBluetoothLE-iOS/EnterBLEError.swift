@@ -7,19 +7,17 @@
 
 import Foundation
 
-enum EnterBLEError {
+public enum EnterBLEError {
     case ble(type: Enums.BLEError)
-    case file(type: Enums.FileError)
     case custom(errorDescription: String?)
 
-    class Enums { }
+    public class Enums { }
 }
 
 extension EnterBLEError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .ble(let type): return type.localizedDescription
-        case .file(let type): return type.localizedDescription
         case .custom(let errorDescription): return errorDescription
         }
     }
@@ -29,7 +27,7 @@ extension EnterBLEError: LocalizedError {
 
 extension EnterBLEError.Enums {
     
-    enum BLEError {
+    public enum BLEError {
         case scanFail
         case connectFail
         case busy
@@ -39,7 +37,7 @@ extension EnterBLEError.Enums {
 }
 
 extension EnterBLEError.Enums.BLEError: LocalizedError {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .scanFail:
             return "Scan Failed"
@@ -56,23 +54,3 @@ extension EnterBLEError.Enums.BLEError: LocalizedError {
 
 }
 
-
-// MARK: - FIle Errors
-
-extension EnterBLEError.Enums {
-    enum FileError {
-        case read(path: String)
-        case write(path: String, value: Any)
-        case custom(errorDescription: String?)
-    }
-}
-
-extension EnterBLEError.Enums.FileError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-            case .read(let path): return "Could not read file from \"\(path)\""
-            case .write(let path, let value): return "Could not write value \"\(value)\" file from \"\(path)\""
-            case .custom(let errorDescription): return errorDescription
-        }
-    }
-}
