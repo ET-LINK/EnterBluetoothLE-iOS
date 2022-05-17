@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum EnterBLEError {
+public enum EnterBLEError: Error {
     case ble(type: Enums.BLEError)
     case custom(errorDescription: String?)
 
