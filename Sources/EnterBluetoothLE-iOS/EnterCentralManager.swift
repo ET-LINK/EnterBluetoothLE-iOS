@@ -12,14 +12,24 @@ import PromiseKit
 public class EnterCentralManager {
     //Object
     public static let shared = EnterCentralManager()
+
     public let centralManager: CentralManager
     
+    public class func setup(identifierKey: String) {
+        restoreIdentifierKey = identifierKey
+    }
+    
     private init() {
-        
-        centralManager = .live(.init(showPowerAlert: true, restoreIdentifierKey: "EnterBlutooth.entertech.identifier"))
+        if EnterCentralManager.restoreIdentifierKey != nil {
+            centralManager = .live(.init(showPowerAlert: true, restoreIdentifierKey: EnterCentralManager.restoreIdentifierKey))
+        } else {
+            
+            centralManager = .live()
+        }
     }
     
     //param
+    static var restoreIdentifierKey: String?
     var cancellables: Set<AnyCancellable> = []
     var peripherals: [PeripheralDiscovery] = []
     var scanTask: AnyCancellable?
