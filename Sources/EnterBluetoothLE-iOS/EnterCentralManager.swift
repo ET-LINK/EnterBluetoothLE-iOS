@@ -12,7 +12,12 @@ import PromiseKit
 public class EnterCentralManager {
     //Object
     public static let shared = EnterCentralManager()
-    public let centralManager: CentralManager = .live()
+    public let centralManager: CentralManager
+    
+    private init() {
+        
+        centralManager = .live(.init(showPowerAlert: true, restoreIdentifierKey: "EnterBlutooth.entertech.identifier"))
+    }
     
     //param
     var cancellables: Set<AnyCancellable> = []
