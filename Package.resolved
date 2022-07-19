@@ -3,10 +3,10 @@
     {
       "identity" : "combinecorebluetooth",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/StarryInternet/CombineCoreBluetooth",
+      "location" : "https://github.com/ET-LINK/CombineCoreBluetooth",
       "state" : {
-        "revision" : "2feac9404f3cd2948a0838d077e01b175e5622c0",
-        "version" : "0.3.0"
+        "branch" : "lk",
+        "revision" : "93876c91a2b6e135b9dbd6c6a9bee4ffc1d9fc5f"
       }
     },
     {
