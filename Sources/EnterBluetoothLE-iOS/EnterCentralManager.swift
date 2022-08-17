@@ -10,16 +10,14 @@ import Combine
 import PromiseKit
 
 public class EnterCentralManager {
-    //Object
-    public static let shared = EnterCentralManager()
-
+    
     public let centralManager: CentralManager
     
     public class func setup(identifierKey: String) {
         restoreIdentifierKey = identifierKey
     }
     
-    private init() {
+    public init() {
         if EnterCentralManager.restoreIdentifierKey != nil {
             centralManager = .live(.init(showPowerAlert: true, restoreIdentifierKey: EnterCentralManager.restoreIdentifierKey))
         } else {
