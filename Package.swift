@@ -29,9 +29,6 @@ let package = Package(
             dependencies: [
                 "CombineCoreBluetooth",
                 "PromiseKit",
-            ]),
-        .testTarget(
-            name: "EnterCombineBluetoothTests",
-            dependencies: ["EnterBluetoothLE-iOS"]),
+            ])
     ]
 )

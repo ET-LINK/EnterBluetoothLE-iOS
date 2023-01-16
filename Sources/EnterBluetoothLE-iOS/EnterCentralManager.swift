@@ -31,7 +31,7 @@ public class EnterCentralManager {
     var cancellables: Set<AnyCancellable> = []
     var peripherals: [PeripheralDiscovery] = []
     var scanTask: AnyCancellable?
-    
+
     /// 检索周边设备
     /// - Parameters:
     ///   - interval: 扫描时间
@@ -72,6 +72,9 @@ public class EnterCentralManager {
 
         return Promise.init { resolver in
             centralManager.connect(discovery.peripheral)
+                .timeout(.seconds(5), scheduler: DispatchQueue.global(), customError: {
+                    return EnterBLEError.timeout
+                })
                 .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 

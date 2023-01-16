@@ -10,7 +10,7 @@ import Foundation
 public enum EnterBLEError: Error {
     case ble(type: Enums.BLEError)
     case custom(errorDescription: String?)
-
+    case timeout
     public class Enums { }
 }
 
@@ -19,6 +19,8 @@ extension EnterBLEError: LocalizedError {
         switch self {
         case .ble(let type): return type.localizedDescription
         case .custom(let errorDescription): return errorDescription
+        case .timeout:
+            return "Timeout"
         }
     }
 }
