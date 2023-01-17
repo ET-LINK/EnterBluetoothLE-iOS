@@ -72,9 +72,6 @@ public class EnterCentralManager {
 
         return Promise.init { resolver in
             centralManager.connect(discovery.peripheral)
-                .timeout(.seconds(5), scheduler: DispatchQueue.global(), customError: {
-                    return EnterBLEError.timeout
-                })
                 .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 
