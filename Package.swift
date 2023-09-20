@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(url: "https://github.com/mxcl/PromiseKit.git", from: "6.15.3"),
+        .package(url: "https://github.com/mxcl/PromiseKit.git", from: "8.0.0"),
         .package(url: "https://github.com/StarryInternet/CombineCoreBluetooth", from: "0.3.0"),
         // .package(url: "https://github.com/Entertech/IOS-Pods-DFU-Library.git", from: "4.11.2")
     ],
