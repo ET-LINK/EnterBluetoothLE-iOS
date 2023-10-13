@@ -73,23 +73,36 @@ public class EnterCentralManager {
         scanTask = nil
     }
     
-    
-    /// 连接设备
-    /// - Parameter discovery: 扫描到的设备列表中的设备
-    /// - Returns: 周边设备的服务
-    public func connect(_ discovery: PeripheralDiscovery) -> Promise<Peripheral> {
-
-        return Promise.init { resolver in
+    private func connectInner(_ discovery: PeripheralDiscovery) -> Promise<Void> {
+        Promise.init { resolver in
             
             centralManager.connect(discovery.peripheral)
                 .sink { completion in
                 guard case let .failure(error) = completion else { return }
                 
                 resolver.reject(error)
-            } receiveValue: { peripheral in
-                resolver.fulfill(peripheral)
+            } receiveValue: { _ in
+                resolver.fulfill(())
             }.store(in: &cancellables)
         }
+    }
+    
+    
+    /// 连接设备
+    /// - Parameter discovery: 扫描到的设备列表中的设备
+    /// - Returns: 周边设备的服务
+    public func connect(_ discovery: PeripheralDiscovery) -> Promise<Peripheral> {
+        let timeout = after(seconds: 5).map { throw EnterBLEError.timeout }
+        return Promise.init { resolver in
+            race(connectInner(discovery), timeout)
+                .done { p in
+                    resolver.fulfill(discovery.peripheral)
+                }
+                .catch { error in
+                    resolver.reject(error)
+                }
+        }
+
         
     }
     
