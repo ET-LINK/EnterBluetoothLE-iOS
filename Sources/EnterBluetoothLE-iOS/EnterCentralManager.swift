@@ -41,9 +41,18 @@ public class EnterCentralManager {
     public func searchForPeripherals(in interval: TimeInterval, services: [CBUUID], mac: Data? = nil) -> Promise<[PeripheralDiscovery]> {
         scanTask = centralManager.scanForPeripherals(withServices: services)
             .scan([], { list, discovery -> [PeripheralDiscovery] in
-                guard !list.contains(where: { $0.id == discovery.id}) else { return list } //避免重复
                 guard (mac == nil ? true : mac == discovery.advertisementData.manufacturerData) else {return list} //过滤mac地址
-              return list + [discovery]
+                var discorverList: [PeripheralDiscovery] = list
+                
+                if list.contains(where: {$0.id == discovery.id}) {
+                    if let same = list.first(where: {$0.id == discovery.id}), same.rssi != discovery.rssi {
+                        discorverList.removeAll(where: {$0.id == discovery.id})
+                        discorverList.append(discovery)
+                    }
+                } else {
+                    discorverList.append(discovery)
+                }
+              return discorverList
             }).sink(receiveValue: { list in
                 self.peripherals.removeAll()
                 self.peripherals.append(contentsOf: list)
@@ -71,6 +80,7 @@ public class EnterCentralManager {
     public func connect(_ discovery: PeripheralDiscovery) -> Promise<Peripheral> {
 
         return Promise.init { resolver in
+            
             centralManager.connect(discovery.peripheral)
                 .sink { completion in
                 guard case let .failure(error) = completion else { return }
