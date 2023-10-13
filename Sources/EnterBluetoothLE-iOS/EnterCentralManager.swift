@@ -39,7 +39,7 @@ public class EnterCentralManager {
     ///   - mac: 物理地址, 默认为空, 当有字段时, 按照广播物理地址连接
     /// - Returns: 扫描到的设备列表
     public func searchForPeripherals(in interval: TimeInterval, services: [CBUUID], mac: Data? = nil) -> Promise<[PeripheralDiscovery]> {
-        scanTask = centralManager.scanForPeripherals(withServices: services)
+        scanTask = centralManager.scanForPeripherals(withServices: services, options: .init(allowDuplicates: true))
             .scan([], { list, discovery -> [PeripheralDiscovery] in
                 guard (mac == nil ? true : mac == discovery.advertisementData.manufacturerData) else {return list} //过滤mac地址
                 var discorverList: [PeripheralDiscovery] = list
