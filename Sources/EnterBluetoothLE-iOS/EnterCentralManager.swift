@@ -19,7 +19,7 @@ public class EnterCentralManager {
     
     public init() {
         if EnterCentralManager.restoreIdentifierKey != nil {
-            centralManager = .live(.init(showPowerAlert: true, restoreIdentifierKey: EnterCentralManager.restoreIdentifierKey))
+            centralManager = .live(.init(showPowerAlert: true, restoreIdentifier: EnterCentralManager.restoreIdentifierKey))
         } else {
             
             centralManager = .live()
@@ -167,3 +167,50 @@ public class EnterCentralManager {
 
 }
 
+// 持久化扫描
+extension EnterCentralManager {
+    /// 检索周边设备
+    /// - Parameters:
+    ///   - interval: 扫描时间
+    ///   - services: 连接服务
+    ///   - mac: 物理地址, 默认为空, 当有字段时, 按照广播物理地址连接
+    /// - Returns: 扫描到的设备列表
+    public func scanForPeripheralDuplicates(services: [CBUUID], mac: Data? = nil) -> AnyPublisher<[PeripheralDiscovery], Never> {
+        centralManager.scanForPeripherals(withServices: services, options: .init(allowDuplicates: true))
+            .scan([], { list, discovery -> [PeripheralDiscovery] in
+                guard (mac == nil ? true : mac == discovery.advertisementData.manufacturerData) else {return list} //过滤mac地址
+                var discorverList: [PeripheralDiscovery] = list
+                
+                if list.contains(where: {$0.id == discovery.id}) {
+                    if let same = list.first(where: {$0.id == discovery.id}), same.rssi != discovery.rssi {
+                        discorverList.removeAll(where: {$0.id == discovery.id})
+                        discorverList.append(discovery)
+                    }
+                } else {
+                    discorverList.append(discovery)
+                }
+              return discorverList
+            })
+            .eraseToAnyPublisher()
+
+    }
+    
+    public func connectWithoutReturn(_ peripheral: Peripheral) {
+        centralManager.connect(peripheral)
+            .sink { complete in
+                switch complete {
+                case .finished:
+                    break
+                case .failure(let error):
+                    print("Connect Failed: \(error.localizedDescription)")
+                }
+            } receiveValue: { peripheral in
+                
+            }.store(in: &cancellables)
+
+    }
+    
+    
+    
+
+}

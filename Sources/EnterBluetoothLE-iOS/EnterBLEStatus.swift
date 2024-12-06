@@ -48,11 +48,11 @@ public struct Battery {
 /// 基本设备信息
 public struct BLEDeviceInfo {
     /// 设备名称
-    public internal (set) var name: String = ""
+    public internal(set) var name: String = ""
     /// 设备硬件版本
-    public internal (set) var hardware: String = ""
+    public internal(set) var hardware: String = ""
     /// 设备固件版本
-    public internal (set) var firmware: String = ""
+    public internal(set) var firmware: String = ""
     /// 设备 mac 地址
-    public internal (set) var mac: String = ""
+    public internal(set) var mac: String = ""
 }
